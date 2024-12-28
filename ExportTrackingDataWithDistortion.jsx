@@ -1,5 +1,6 @@
 {
-    function exportTrackingDataToJSON() {
+    function exportTrackingDataWithDistortion() {
+        // Prompt user to save the JSON file
         var outputFile = File.saveDialog("Save Tracking Data JSON", "*.json");
         if (!outputFile) return;
 
@@ -9,16 +10,17 @@
             return;
         }
 
-        app.beginUndoGroup("Export Tracking Data to JSON");
+        app.beginUndoGroup("Export Tracking Data with Distortion");
 
         var trackingData = {};
-        var comps = project.selection; // Export data only for selected compositions
+        var comps = project.selection; // Selected compositions only
 
         if (comps.length === 0) {
-            alert("Please select at least one composition.");
+            alert("Please select at least one composition in the Project Panel.");
             return;
         }
 
+        // Iterate through selected compositions
         for (var i = 0; i < comps.length; i++) {
             if (!(comps[i] instanceof CompItem)) continue;
             var comp = comps[i];
@@ -30,6 +32,7 @@
                 if (layer.property("Transform")) {
                     var transform = layer.property("Transform");
 
+                    // Extract keyframes for each transformation property
                     var layerData = {
                         name: layer.name,
                         position: extractKeyframes(transform.property("Position")),
@@ -37,7 +40,18 @@
                         scale: extractKeyframes(transform.property("Scale")),
                         skew: transform.property("Skew") ? extractKeyframes(transform.property("Skew")) : null,
                         skewAxis: transform.property("Skew Axis") ? extractKeyframes(transform.property("Skew Axis")) : null,
+                        opacity: transform.property("Opacity") ? extractKeyframes(transform.property("Opacity")) : null,
                     };
+
+                    // Include distortion properties if present
+                    if (layer.effect) {
+                        var effects = {};
+                        for (var k = 1; k <= layer.effect.numProperties; k++) {
+                            var effect = layer.effect.property(k);
+                            effects[effect.name] = extractKeyframes(effect);
+                        }
+                        layerData.effects = effects;
+                    }
 
                     compData.push(layerData);
                 }
@@ -46,13 +60,14 @@
             trackingData[comp.name] = compData;
         }
 
+        // Write the JSON data to file
         var jsonString = JSON.stringify(trackingData, null, 4);
         outputFile.open("w");
         outputFile.write(jsonString);
         outputFile.close();
 
         app.endUndoGroup();
-        alert("Tracking data has been exported successfully!");
+        alert("Tracking data has been successfully exported to JSON!");
     }
 
     function extractKeyframes(property) {
@@ -65,11 +80,18 @@
             keyframes.push({
                 time: property.keyTime(k),
                 value: property.keyValue(k),
+                interpolation: {
+                    inType: property.keyInInterpolationType(k),
+                    outType: property.keyOutInterpolationType(k),
+                },
+                easing: {
+                    inTemporalEase: property.keyInTemporalEase(k),
+                    outTemporalEase: property.keyOutTemporalEase(k),
+                }
             });
         }
-
         return keyframes;
     }
 
-    exportTrackingDataToJSON();
+    exportTrackingDataWithDistortion();
 }
