@@ -1,0 +1,26 @@
+{
+    "Composition Name": [
+        {
+            "name": "Layer 1",
+            "position": [
+                { "time": 0, "value": [960, 540], "interpolation": { "inType": 6613, "outType": 6613 }, "easing": { "inTemporalEase": [0.33], "outTemporalEase": [0.66] } }
+            ],
+            "rotation": [
+                { "time": 0, "value": 0, "interpolation": { "inType": 6613, "outType": 6613 }, "easing": { "inTemporalEase": [0.33], "outTemporalEase": [0.66] } }
+            ],
+            "scale": [
+                { "time": 0, "value": [100, 100] }
+            ],
+            "skew": null,
+            "skewAxis": null,
+            "opacity": [
+                { "time": 0, "value": 100 }
+            ],
+            "effects": {
+                "Gaussian Blur": [
+                    { "time": 0, "value": 5 }
+                ]
+            }
+        }
+    ]
+}

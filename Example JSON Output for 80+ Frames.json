@@ -1,0 +1,40 @@
+{
+    "Composition Name": [
+        {
+            "name": "Layer 1",
+            "frames": [
+                {
+                    "time": 0,
+                    "position": [960, 540],
+                    "rotation": 0,
+                    "scale": [100, 100],
+                    "skew": 0,
+                    "skewAxis": 0,
+                    "opacity": 100,
+                    "perspective": {
+                        "upperLeft": [0, 0],
+                        "upperRight": [1920, 0],
+                        "lowerLeft": [0, 1080],
+                        "lowerRight": [1920, 1080]
+                    }
+                },
+                {
+                    "time": 0.0416667,
+                    "position": [961, 541],
+                    "rotation": 1,
+                    "scale": [101, 101],
+                    "skew": 1,
+                    "skewAxis": 0,
+                    "opacity": 99,
+                    "perspective": {
+                        "upperLeft": [1, 1],
+                        "upperRight": [1919, 1],
+                        "lowerLeft": [1, 1079],
+                        "lowerRight": [1919, 1079]
+                    }
+                }
+                
+            ]
+        }
+    ]
+}
